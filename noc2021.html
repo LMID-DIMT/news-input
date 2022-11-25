@@ -45,6 +45,9 @@
         /* text-align: center!important; */
     }
 
+    .lity-content {
+      background: #fff;
+    }
 
     .well {
         border-radius: 0.5em;
@@ -141,7 +144,7 @@
     }
 
     .inline-info{
-        display: inline-block;
+        <!-- display: inline-block; -->
         background: #fff;
         max-width: 50em;
         padding: 3em;
@@ -203,7 +206,7 @@
             </div>
         </form>
         <div class="well resize-well">
-            <h2>Results</h2>
+            <h2>NOC 2016 Results</h2>
             <form class="" action="index.html" method="post">
                 <div id="ncb" class="">
                     <ol>
@@ -211,26 +214,26 @@
                 </div>
                 <div class="">
                     <input readonly id="nocList" class="copy-field" type="text" name="" value="">
-                    <button class="btn btn-default" id="copy_button" type="button" name="button">Copy</button>
+                    <button class="btn btn-default" id="copy_button" type="button" name="button">Copy (NOC 2016)</button>
                 </div>
             </form>
         </div>
         <div class="well resize-well">
           <h2>Translate using <a href="https://www.statcan.gc.ca/en/statistical-programs/document/noc2016v1_3-noc2021v1_0">NOC 2021 Concordance Table</a></h2>
           <form class="" action="index.html" method="post">
-            <button class="btn btn-default" id="translate_button" type="button" name="button" disabled>get NOC2021 codes</button>
+            <button class="btn btn-default" id="translate_button" type="button" name="button" disabled>Get NOC 2021 codes</button>
             <div id="ncb2" class="">
                 <ol>
                 </ol>
             </div>
             <div class="">
                 <input readonly id="noc21List" class="copy-field" type="text" name="" value="">
-                <button class="btn btn-default" id="copy_button_2" type="button" name="button">Copy</button>
+                <button class="btn btn-default" id="copy_button_2" type="button" name="button">Copy (NOC 2021)</button>
             </div>
           </form>
         </div>
 
-        <div id="inline-info" class="lity-hide inline-info" data-lity>
+        <div id="inline-info" class="lity-hide inline-info">
             <h2 class="info-heading"></h2>
             <h3 class="info-group-title"></h3>
             <h3>Description</h3>
@@ -402,13 +405,13 @@
           var formattedNoc = padWithZero(item.NOC_2021_V1_0,5);
           if (i>0) {
             if (old_arr[i] == old_arr[i-1]) {
-              $('#ncb2 ol').append('<li><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+              $('#ncb2 ol').append('<li><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; ↘ '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
             }
             else {
-              $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+              $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' → '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
             }
           } else {
-            $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+            $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' → '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
           }
 
             //$('#ncb2 ol').append('<li>'+old_arr[i]+' --> '+item.NOC_2021_V1_0+' - '+item.NOC_2021_V1_0_title+'</li>');
