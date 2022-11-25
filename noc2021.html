@@ -189,7 +189,7 @@
   <body>
     <div class="banner">
       <div class="container">
-        <h1>LMI News Article Tagging - Testing with NOC 2021 concordance table(<em>preview</em>)</h1>
+        <h1>LMI News Article Tagging - <em>Using NOC 2021 Concordance table</em></h1>
       </div>
     </div>
     <div class="container">
@@ -250,6 +250,10 @@
 
 
     <script>
+      function padWithZero(num, targetLength) {
+        return String(num).padStart(targetLength, '0');
+      }
+
     (function (arr) {
       arr.forEach(function (item) {
         if (item.hasOwnProperty('append')) {
@@ -348,6 +352,11 @@
         $('#ncb2 ol').empty();
     }
 
+    function clearResults2(){
+        $('#ncb2 ol').empty();
+        $("#noc21List").val("");
+    }
+
     function buildList(arr){
         str='';
         arr.forEach(function(item, i){
@@ -390,15 +399,16 @@
 
     function buildChecklist2(arr, old_arr){
         arr.forEach(function(item, i){
+          var formattedNoc = padWithZero(item.NOC_2021_V1_0,5);
           if (i>0) {
             if (old_arr[i] == old_arr[i-1]) {
-              $('#ncb2 ol').append('<li><input id="noc-'+item.NOC_2021_V1_0+'" type="checkbox" name="nocs" value="'+item.NOC_2021_V1_0+'" checked=true><label class="noc-label" for="noc-'+item.NOC_2021_V1_0+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; --> '+item.NOC_2021_V1_0+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+              $('#ncb2 ol').append('<li><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
             }
             else {
-              $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+item.NOC_2021_V1_0+'" type="checkbox" name="nocs" value="'+item.NOC_2021_V1_0+'" checked=true><label class="noc-label" for="noc-'+item.NOC_2021_V1_0+'"><span class="monospace">'+old_arr[i]+' --> '+item.NOC_2021_V1_0+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+              $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
             }
           } else {
-            $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+item.NOC_2021_V1_0+'" type="checkbox" name="nocs" value="'+item.NOC_2021_V1_0+'" checked=true><label class="noc-label" for="noc-'+item.NOC_2021_V1_0+'"><span class="monospace">'+old_arr[i]+' --> '+item.NOC_2021_V1_0+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
+            $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' --> '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
           }
 
             //$('#ncb2 ol').append('<li>'+old_arr[i]+' --> '+item.NOC_2021_V1_0+' - '+item.NOC_2021_V1_0_title+'</li>');
@@ -453,6 +463,7 @@
     $('#ncb').on('change', function(e){
         e.preventDefault();
         getList();
+        // clearResults2();
     })
 
     $('#ncb2').on('change', function(e){
@@ -475,6 +486,7 @@
     });
     $("#translate_button").click(function(event){
         event.preventDefault();
+        clearResults2();
         var old_list = $("#ncb input:checkbox:checked").map(function(){
           return $(this).val();
         }).get();
