@@ -313,7 +313,7 @@
         $('#inline-info .info-description').empty();
         $('.info-example-titles').empty();
         $('.info-related-occupations').empty();
-        $.get('https://azwsx.clmi-explore-icmt.ca/noc/title/info?noc='+noc).done(function(data){
+        $.get('https://api.explore-labour-market.service.canada.ca/noc/title/info?noc='+noc).done(function(data){
             console.log(data);
             // alert(JSON.stringify(data.nocDescription))
             $('#inline-info .info-heading').append(data.noc);
