@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="lity.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="lity.js"></script>
+    <script src="mark.js"></script>
     <style>
     html {
         overflow-y: scroll;
@@ -186,6 +187,10 @@
 
     }
 
+    li.green {
+      color: green;
+    }
+
     </style>
   </head>
 
@@ -202,6 +207,11 @@
                 <textarea id="article-content" name="content" value=""></textarea>
                 <div id="nac-button" class="center-button">
                     <button class="btn btn-default" id="submit">Analyze Text</button>
+                </div>
+                <div id="green-keywords">
+                  <h3>Green Jobs Keywords:</h3>
+                  <ul>
+                  </ul>
                 </div>
             </div>
         </form>
@@ -249,8 +259,9 @@
 
         </div>
     </div>
-
-
+    <!-- <script src="mark.js"></script> -->
+    <script src="keywords.js"></script>
+    <script src="green_noc_codes.js"></script>
 
     <script>
       function padWithZero(num, targetLength) {
@@ -383,7 +394,12 @@
                 str += ', ';
             }
             str += item;
+   
+            // console.log(item, green_nocs.includes(item))
         });
+        //   Check if any green nocs appear in arr
+      // var regex = new RegExp(green_nocs.join("|"),"gi");
+      // console.log(arr.match(regex))
 
         $('#noc21List').val(str)
     }
@@ -403,7 +419,21 @@
     function buildChecklist2(arr, old_arr){
         arr.forEach(function(item, i){
           var formattedNoc = padWithZero(item.NOC_2021_V1_0,5);
-          if (i>0) {
+          console.log(formattedNoc, green_nocs.includes(parseInt(formattedNoc)))
+
+         if(green_nocs.includes(parseInt(formattedNoc))){
+            if (i>0) {
+            if (old_arr[i] == old_arr[i-1]) {
+              $('#ncb2 ol').append('<li class="green"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; ↘ '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'*</label></li>');
+            }
+            else {
+              $('#ncb2 ol').append('<li class="green" style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' → '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'*</label></li>');
+            }
+          } else {
+            $('#ncb2 ol').append('<li class="green" style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' → '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'*</label></li>');
+          }
+         } else {
+            if (i>0) {
             if (old_arr[i] == old_arr[i-1]) {
               $('#ncb2 ol').append('<li><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">&nbsp;&nbsp;&nbsp;&nbsp; ↘ '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
             }
@@ -413,6 +443,8 @@
           } else {
             $('#ncb2 ol').append('<li style="margin-top:1em"><input id="noc-'+formattedNoc+'" type="checkbox" name="nocs" value="'+formattedNoc+'" checked=true><label class="noc-label" for="noc-'+formattedNoc+'"><span class="monospace">'+old_arr[i]+' → '+formattedNoc+'</span> - '+item.NOC_2021_V1_0_title+'</label></li>');
           }
+         }
+          
 
             //$('#ncb2 ol').append('<li>'+old_arr[i]+' --> '+item.NOC_2021_V1_0+' - '+item.NOC_2021_V1_0_title+'</li>');
         });
@@ -478,9 +510,36 @@
         event.preventDefault();
         copyField();
     });
+
+    function showGreenKeywords(arr){
+      $('#green-keywords ul').empty()
+      if(arr.length>0){
+         arr.forEach(function(keyword, i){
+            $($('#green-keywords ul')).append('<li>'+keyword+'</li>')
+         })
+         
+      }
+    }
+
     $("#submit").click(function(event){
         event.preventDefault();
+      //   Check if any keywords appear in $('#article-content').val()
+      var regex = new RegExp(keywords.join("|"),"gi");
+
+      // $("#article-content").unmark({
+      //    done: function() {
+      //    $(".context").markRegExp(regex, options);
+      //    }
+      //  });
+
+      // $("#article-content").markRegExp(regex, {});
+      // var instance = new Mark(document.querySelector("textarea"));
+      // instance.markRegExp(regex)
+
+      // alert($('#article-content').val().match(regex))
         analyzeText($('#article-content').val());
+        showGreenKeywords($('#article-content').val().match(regex))
+
     });
 
     $("#copy_button_2").click(function(event){
