@@ -164,6 +164,11 @@
         line-height: 1.5em;
     }
 
+    .results-field-label {
+        margin-left: 2em;
+        margin-right:.5em;
+    }
+
     // Small devices (landscape phones, 576px and up)
     @media (min-width: 576px) {
 
@@ -207,6 +212,9 @@
                 <textarea id="article-content" name="content" value=""></textarea>
                 <div id="nac-button" class="center-button">
                     <button class="btn btn-default" id="submit">Analyze Text</button>
+
+                    <label class="results-field-label" for="results">Number of results</label>
+                    <input id="results" name="results" type="number" min="10" step="1" max="20" value="10">
                 </div>
                 <div id="green-keywords">
                   <h3>Green Jobs Keywords:</h3>
@@ -359,7 +367,7 @@
             });
         })
     }
-    var nacURL = 'https://api.explore-labour-market.service.canada.ca/ai/nbc/noc2016/v2?lang=en&q=';
+    var nacURL = 'https://api.explore-labour-market.service.canada.ca/ai/nbc/noc2016/v2?lang=en';
 
     function clearResults(){
         $('#ncb ol').empty();
@@ -462,9 +470,9 @@
         });
     }
 
-    function analyzeText(q){
+    function analyzeText(q,s){
         var promiseNac = $.ajax({
-            url: nacURL+encodeURI(q),
+            url: nacURL+'&s='+s+'&q='+encodeURI(q),
             type: 'GET',
             dataType: 'json',
             success: function(data) { displayResults(data.nbLabels) },
@@ -537,7 +545,7 @@
       // instance.markRegExp(regex)
 
       // alert($('#article-content').val().match(regex))
-        analyzeText($('#article-content').val());
+        analyzeText($('#article-content').val(),$('#results').val());
         showGreenKeywords($('#article-content').val().match(regex))
 
     });
